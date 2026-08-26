@@ -76,13 +76,14 @@ RUN set -eu; \
     base64 -d /tmp/flags.b64 > /tmp/flags.env; \
     . /tmp/flags.env; \
     \
-    grep -rlZ '@@' /var/www/html | xargs -0 -r sed -i \
+    grep -rlZ '@@' /var/www/html /var/www/inc | xargs -0 -r sed -i \
         -e "s|@@FLAG_1@@|${FLAG_1}|g" \
         -e "s|@@FLAG_3@@|${FLAG_3}|g" \
         -e "s|@@FLAG_4@@|${FLAG_4}|g" \
         -e "s|@@FLAG_6@@|${FLAG_6}|g" \
         -e "s|@@FLAG_7@@|${FLAG_7}|g" \
-        -e "s|@@DEV_USER@@|${DEV_USER}|g"; \
+        -e "s|@@DEV_USER@@|${DEV_USER}|g" \
+        -e "s|@@AUTH_SECRET@@|${AUTH_SECRET}|g"; \
     \
     printf '%s\n' "${FLAG_8}"  > /var/www/html/uploads/.flag; \
     printf '%s\n' "${FLAG_9}"  > /home/devops/user.txt; \
@@ -90,7 +91,7 @@ RUN set -eu; \
     \
     rm -f /tmp/flags.b64 /tmp/flags.env; \
     \
-    if grep -rq '@@FLAG' /var/www/html; then \
+    if grep -rq '@@FLAG\|@@AUTH_SECRET\|@@DEV_USER' /var/www/html /var/www/inc; then \
         echo 'NAPAKA: nekatere oznacbe niso bile zamenjane' >&2; exit 1; \
     fi
 

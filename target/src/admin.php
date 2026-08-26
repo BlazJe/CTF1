@@ -1,9 +1,13 @@
 <?php
 require_once '/var/www/inc/session.php';
 
+// Skrbniška plošča kot edini del aplikacije preveri tudi podpis seje.
+// Podpisa ni mogoče izračunati brez skrivnosti na strežniku, zato do sem
+// ne vodi ponarejen piškotek - potrebna je resnična prijava z geslom.
 $authorized = $SESSION_LOGGED_IN
     && $SESSION_USER === 'admin'
-    && $SESSION_ROLE === 'admin';
+    && $SESSION_ROLE === 'admin'
+    && nordvel_auth_valid($SESSION);
 
 $uploadsDir = __DIR__ . '/uploads';
 $uploadMessage = null;

@@ -22,7 +22,7 @@ CREATE TABLE secrets (
 
 -- Stopnja 6: nesoljen MD5 sibkega gesla iz seznama rockyou.txt.
 INSERT INTO users (username, password_md5, role) VALUES
-    ('admin',     'd5c0607301ad5d5c1528962a83992ac8',      'admin'),
+    ('admin',     '9542b1c8a9396d76bf92e556afda0cfc',      'admin'),
     ('blazj',     MD5('Nordvel-2026!x'), 'user'),
     ('mkovacic',  MD5('Adriales!2025'),  'user'),
     ('servisni',  MD5('S3rvis-nordvel'), 'user');

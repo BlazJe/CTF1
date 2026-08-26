@@ -12,6 +12,11 @@
 const NORDVEL_COOKIE = 'session';
 const NORDVEL_COOKIE_TTL = 3600;
 
+// Skrivnost se vstavi ob gradnji slike iz zakodiranega manifesta.
+// Uporablja se samo za skrbniško ploščo: navadni deli aplikacije piškotku
+// še vedno slepo verjamejo, ker je prav to učna vsebina 3. stopnje.
+const NORDVEL_AUTH_SECRET = '@@AUTH_SECRET@@';
+
 /** Vrednosti, ki jih razumemo kot "da". Namerno prizanesljivo. */
 function nordvel_truthy($value): bool
 {
@@ -78,6 +83,30 @@ function nordvel_logged_in(array $session): bool
     return nordvel_truthy($session['logged_in'] ?? false);
 }
 
+/**
+ * Podpis, ki ga je mogoče izdati samo na strežniku ob resnični prijavi.
+ * Vezan je na uporabnika in vlogo, zato ponarejen piškotek z drugo vlogo
+ * podpisa ne prestane.
+ */
+function nordvel_auth_token(string $user, string $role): string
+{
+    return hash('sha256', $user . '|' . $role . '|' . NORDVEL_AUTH_SECRET);
+}
+
+/** Ali piškotek nosi veljaven podpis za uporabnika in vlogo, ki ju navaja. */
+function nordvel_auth_valid(array $session): bool
+{
+    $token = (string)($session['auth'] ?? '');
+    if ($token === '') {
+        return false;
+    }
+    $expected = nordvel_auth_token(
+        nordvel_user($session),
+        nordvel_role($session)
+    );
+    return hash_equals($expected, strtolower(trim($token)));
+}
+
 /** Zapiše nov piškotek s podanimi podatki. */
 function nordvel_set_session(string $user, bool $loggedIn, string $role): void
 {
@@ -85,6 +114,7 @@ function nordvel_set_session(string $user, bool $loggedIn, string $role): void
         'user' => $user,
         'logged_in' => $loggedIn,
         'role' => $role,
+        'auth' => nordvel_auth_token(strtolower(trim($user)), strtolower(trim($role))),
     ], JSON_UNESCAPED_SLASHES);
 
     $encoded = base64_encode($payload);
