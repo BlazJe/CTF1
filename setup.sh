@@ -82,14 +82,10 @@ Naslovi:
   Scoreboard (oddaja zastavic):        http://score.lan:8000 (ali http://127.0.0.1:8000)
 
 Odpri scoreboard, vpiši ime ekipe in začni s prvo nalogo.
-Za odkrivanje poti zadošča privzeti seznam:
-
-  gobuster dir -u http://ctf.lan:8080 -w /usr/share/wordlists/dirb/common.txt
 
 Ustavitev (obdrži podatke, počisti /etc/hosts):     ./setup.sh down
 Popoln reset (izbriše vse podatke in znova zažene): ./setup.sh reset
 
-Rešitve za mentorja so šifrirane:  ./scripts/walkthrough.sh open
 ================================================================
 EOF
 }
