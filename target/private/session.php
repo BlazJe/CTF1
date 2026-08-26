@@ -118,7 +118,11 @@ function nordvel_set_session(string $user, bool $loggedIn, string $role): void
     ], JSON_UNESCAPED_SLASHES);
 
     $encoded = base64_encode($payload);
-    setcookie(NORDVEL_COOKIE, $encoded, time() + NORDVEL_COOKIE_TTL, '/');
+
+    // setrawcookie() namesto setcookie(): slednji bi zapolnitev "=" na koncu
+    // base64 zapisal kot "%3D". Orodja, kot je CyberChef, znak % odstranijo,
+    // preostala "3D" pa se dekodirata v odvecen znak na koncu JSON-a.
+    setrawcookie(NORDVEL_COOKIE, $encoded, time() + NORDVEL_COOKIE_TTL, '/');
     $_COOKIE[NORDVEL_COOKIE] = $encoded;
 }
 
