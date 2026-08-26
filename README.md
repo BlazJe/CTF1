@@ -3,7 +3,7 @@
 Celotno okolje teče lokalno v Dockerju in ni dosegljivo z drugih naprav.
 
 ```bash
-git clone <naslov-repozitorija> nordvel-ctf
+git clone https://github.com/BlazJe/CTF1.git nordvel-ctf
 cd nordvel-ctf
 ./setup.sh up
 ```
