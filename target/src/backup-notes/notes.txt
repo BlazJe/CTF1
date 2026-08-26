@@ -1,0 +1,13 @@
+Nordvel d.o.o. - interni zapiski pred selitvijo streznika
+
+Ta mapa je samo zacasna varnostna kopija. Ko bo selitev koncana, jo je treba
+izbrisati s produkcijskega streznika.
+
+Zastavica za notranji varnostni pregled:
+
+    @@FLAG_1@@
+
+Odprte naloge:
+  - TODO: iz index.php odstrani staro opombo razvijalca
+  - TODO: preveri pravice na mapi za nalaganje datotek
+  - TODO: zamenjaj gesla, ki jih uporabljamo na vec mestih hkrati

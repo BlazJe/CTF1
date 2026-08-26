@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Nordvel CTF - začetek{% endblock %}
+
+{% block body %}
+<div class="start-shell">
+  <div class="start-card">
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      </svg>
+    </div>
+
+    <h1>Nordvel CTF</h1>
+    <p class="lead">
+      Vaja iz spletne varnosti v {{ total_tasks }} stopnjah. Naloge se odklepajo po vrsti -
+      vsaka pusti sled za naslednjo, zato ni treba ničesar ugibati na slepo.
+    </p>
+
+    {% if error %}
+      <div class="flash flash-error">{{ error }}</div>
+    {% endif %}
+
+    <form method="post" action="/">
+      <label class="field-label" for="team_name">Ime ekipe</label>
+      <input type="text" id="team_name" name="team_name" maxlength="40"
+             placeholder="npr. Modri tim" autocomplete="off" autofocus required>
+      <button class="btn-primary" type="submit">Začni izziv</button>
+    </form>
+
+    <p class="foot-note">
+      Registracija ni potrebna. Če vpišete ime, ki je že bilo uporabljeno,
+      nadaljujete tam, kjer je ta ekipa ostala.
+    </p>
+
+    <div class="start-meta">
+      <div><span>{{ total_tasks }}</span> nalog</div>
+      <div><span>{{ total_points }}</span> možnih točk</div>
+      <div><span>2</span> namiga na nalogo</div>
+    </div>
+  </div>
+</div>
+{% endblock %}

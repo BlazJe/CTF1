@@ -1,0 +1,18 @@
+# Gradbeni kontekst je koren repozitorija, zato izlocimo vse, cesar
+# gradnja ne potrebuje.
+.git
+.gitignore
+.dockerignore
+
+WALKTHROUGH.md
+WALKTHROUGH.md.enc
+README.md
+prompt.md
+
+scripts/
+setup.sh
+reset.sh
+
+**/__pycache__/
+**/*.py[cod]
+*.log

@@ -1,0 +1,72 @@
+services:
+  ctf-db:
+    build:
+      context: .
+      dockerfile: db/Dockerfile
+    container_name: ctf-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: "R00t-Internal-Only!"
+      MYSQL_DATABASE: ctfdb
+      MYSQL_USER: ctfuser
+      MYSQL_PASSWORD: "Devops2023!"
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      ctfnet:
+        ipv4_address: 172.28.0.10
+    # Namenoma brez izpostavljenega vrat - baza je dosegljiva samo znotraj docker omrežja.
+
+  ctf-target:
+    build:
+      # Kontekst je koren repozitorija, ker gradnja potrebuje tudi
+      # secrets/flags.b64 z zakodiranimi zastavicami.
+      context: .
+      dockerfile: target/Dockerfile
+    container_name: ctf-target
+    restart: unless-stopped
+    depends_on:
+      - ctf-db
+    ports:
+      # Vezano izkljucno na loopback: okolje je dosegljivo samo s tega
+      # racunalnika. Brez "127.0.0.1:" bi Docker odprl vrata na vseh
+      # vmesnikih (tudi javnih) in obsel pravila pozarnega zidu.
+      - "127.0.0.1:8080:80"
+    networks:
+      ctfnet:
+        ipv4_address: 172.28.0.20
+    volumes:
+      - uploads-data:/var/www/html/uploads
+
+  ctf-scoreboard:
+    build:
+      context: .
+      dockerfile: scoreboard/Dockerfile
+    container_name: ctf-scoreboard
+    restart: unless-stopped
+    environment:
+      # Naslovi, ki jih vmesnik prikaže v vrstici z okoljem.
+      TARGET_URL: "http://ctf.lan:8080"
+      TARGET_IP: "172.28.0.20"
+      HOST_IP: "172.28.0.1"
+    ports:
+      # Enako kot pri tarci: samo loopback.
+      - "127.0.0.1:8000:8000"
+    networks:
+      ctfnet:
+        ipv4_address: 172.28.0.30
+    volumes:
+      - scoreboard-data:/data
+
+networks:
+  ctfnet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
+          gateway: 172.28.0.1
+
+volumes:
+  db-data:
+  uploads-data:
+  scoreboard-data:

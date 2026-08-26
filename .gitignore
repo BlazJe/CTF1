@@ -1,0 +1,19 @@
+# Rešitve v čistopisu se nikoli ne objavijo.
+# V repozitoriju je samo šifrirana WALKTHROUGH.md.enc.
+WALKTHROUGH.md
+
+
+# Delovni zapiski in navodila za predelavo, ki niso del izdelka.
+prompt.md
+
+# Lokalno stanje
+*.log
+.env
+__pycache__/
+*.py[cod]
+
+# Urejevalniki in operacijski sistem
+.vscode/
+.idea/
+*.swp
+.DS_Store
